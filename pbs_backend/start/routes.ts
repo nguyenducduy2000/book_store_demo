@@ -19,6 +19,7 @@ router.get('/', async () => {
     return user
 })
 router.post('/register', [AuthController, 'register'])
+router.get('/verify-email', [AuthController, 'verify']).as('verifyEmail')
 router.post('/login', [AuthController, 'login'])
 
 router
@@ -26,8 +27,8 @@ router
         router.get('/books', [BooksController, 'index'])
         router.get('/books/:id', [BooksController, 'show'])
         router.post('/books', [BooksController, 'store'])
-        router.put('/books/:id', [BooksController, 'update'])
-        router.delete('/books/:id', [BooksController, 'destroy'])
+        router.patch('/books', [BooksController, 'update'])
+        router.delete('/books', [BooksController, 'destroy'])
     })
     .prefix('/api/v1')
     .use(middleware.auth({ guards: ['api'] }))

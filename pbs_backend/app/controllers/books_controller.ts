@@ -2,8 +2,9 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Book from '#models/book'
 import Author from '#models/author'
 import BookPolicy from '#policies/book_policy'
-// import { inject } from '@adonisjs/core'
+import { inject } from '@adonisjs/core'
 import { imageValidator } from '#validators/book'
+import BookService from '#services/book_service'
 
 export default class BooksController {
     // [GET] /books - display all books
@@ -17,7 +18,7 @@ export default class BooksController {
         const id = Number(request.param('id'))
 
         // find book by id
-        const book = await Book.findBy('id', id)
+        const book = await Book.find(id)
 
         // return book if found
         if (book) {
@@ -64,18 +65,47 @@ export default class BooksController {
     }
 
     // [PUT] /books/:id - update a specific book
-    async update({ bouncer, response }: HttpContext) {
+    @inject()
+    async update({ request, bouncer, response }: HttpContext, bookService: BookService) {
         // check if user's role is admin
         if (await bouncer.with(BookPolicy).denies('create')) {
             return response.status(403).json({ message: 'Unauthorized' })
         }
+        // get update data from request
+        const req = request.body()
+        const image = request.file('avatar')
+        if (image) {
+            await imageValidator.validate(image)
+        }
+        const data = {
+            ...req,
+            avatar: image?.toJSON(),
+        }
+        // console.log('before service:::', data)
+
+        // update book in database
+        await bookService.UpdateBook(data)
+
+        // redirect to current book after update
+        // return response.redirect(`/api/v1/books/${req.id}`)
     }
 
     // [DELETE] /books/:id - delete a specific book
-    async destroy({ bouncer, response }: HttpContext) {
+    async destroy({ request, bouncer, response }: HttpContext) {
         // check if user's role is admin
         if (await bouncer.with(BookPolicy).denies('create')) {
             return response.status(403).json({ message: 'Unauthorized' })
         }
+
+        // get id from request
+        const id = request.qs().id
+
+        // delete book from database
+        const book = await Book.findOrFail(id)
+
+        await book.delete()
+
+        // redirect to index page
+        return response.redirect('/api/v1/books')
     }
 }

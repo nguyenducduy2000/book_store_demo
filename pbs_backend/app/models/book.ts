@@ -1,14 +1,5 @@
 import { DateTime } from 'luxon'
-import {
-    BaseModel,
-    column,
-    manyToMany,
-    belongsTo,
-    hasMany,
-    beforeSave,
-    afterFetch,
-    afterFind,
-} from '@adonisjs/lucid/orm'
+import { BaseModel, column, manyToMany, belongsTo, hasMany, beforeSave } from '@adonisjs/lucid/orm'
 import type { ManyToMany, BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import Genre from './genre.js'
 import Category from './category.js'
@@ -68,18 +59,6 @@ export default class Book extends BaseModel {
     static async beforeSave(book: Book) {
         if (book.$dirty.avatar) {
             book.avatar = JSON.stringify(book.avatar)
-        }
-    }
-
-    @afterFetch()
-    static async afterFetch(book: Book) {
-        if (book.avatar) book.avatar = JSON.parse(book.avatar)
-    }
-
-    @afterFind()
-    static async afterFind(books: Book[]) {
-        for (const book of books) {
-            if (book.avatar) book.avatar = JSON.parse(book.avatar)
         }
     }
 }

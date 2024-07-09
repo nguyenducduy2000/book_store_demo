@@ -29,6 +29,9 @@ export default class User extends BaseModel {
     @column({ columnName: 'is_admin' })
     declare isAdmin: boolean
 
+    @column({ columnName: 'is_active' })
+    declare isActive: boolean
+
     @column.dateTime({ autoCreate: true })
     declare createdAt: DateTime
 
