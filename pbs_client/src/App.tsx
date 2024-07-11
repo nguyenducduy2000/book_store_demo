@@ -1,63 +1,45 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './scss/styles.scss';
 
-import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-import Dropdown from "react-bootstrap/Dropdown";
+import './App.css';
+import { LoginLayout, MainLayout } from './Layout';
+import Home from './Pages/Home';
+import Login from './Pages/Login';
+import config from './Config';
 
-function App() {
-    const [count, setCount] = useState(0);
-
+const App: React.FC = () => {
     return (
-        <>
-            <div>
-                <a href="https://vitejs.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img
-                        src={reactLogo}
-                        className="logo react"
-                        alt="React logo"
-                    />
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
-
-            <Dropdown as={ButtonGroup}>
-                <Button variant="success">Split Button</Button>
-
-                <Dropdown.Toggle
-                    split
-                    variant="success"
-                    id="dropdown-split-basic"
+        <Router>
+            <Routes>
+                <Route
+                    path={config.routes.home}
+                    element={
+                        <MainLayout>
+                            <Home />
+                        </MainLayout>
+                    }
                 />
-
-                <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                        Another action
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">
-                        Something else
-                    </Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-        </>
+                <Route
+                    path={config.routes.login}
+                    element={
+                        <LoginLayout>
+                            <Login />
+                        </LoginLayout>
+                    }
+                />
+                <Route
+                    path={config.routes.register}
+                    element={
+                        <LoginLayout>
+                            <Login />
+                        </LoginLayout>
+                    }
+                />
+            </Routes>
+        </Router>
     );
-}
+};
 
 export default App;

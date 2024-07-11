@@ -8,16 +8,39 @@
       "path": "./tsconfig.node.json"
     }
   ],
-  "path": {
-    "#src/*": ["./src/*.js"],
-    "#page/*": ["./src/Pages/*.js"],
-    "#components/*": ["./src/Components/*.js"],
-    "#utils/*": ["./src/Utils/*.js"],
-    "#hooks/*": ["./src/Hooks/*.js"],
-    "#services/*": ["./src/Services/*.js"],
-    "#store/*": ["./src/Store/*.js"],
-    "#config/*": ["./src/Config/*.js"],
-    "#routes/*": ["./src/Routes/*.js"],
-    "#Layout/*": ["./src/Layout/*.js"],
-  }
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@Page/*": [
+        "./src/Pages/*"
+      ],
+      "@Components/*": [
+        "./src/Components/*"
+      ],
+      "@Utils/*": [
+        "./src/Utils/*"
+      ],
+      "@Hooks/*": [
+        "./src/Hooks/*"
+      ],
+      "@Services/*": [
+        "./src/Services/*"
+      ],
+      "@Store/*": [
+        "./src/Store/*"
+      ],
+      "@Config/*": [
+        "src/Config/*"
+      ],
+      "@Routes/*": [
+        "src/routes/*"
+      ],
+      "@Layout/*": [
+        "./src/Layout/*"
+      ],
+    }
+  },
 }
