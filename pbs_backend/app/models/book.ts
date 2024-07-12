@@ -5,6 +5,7 @@ import Genre from './genre.js'
 import Category from './category.js'
 import Author from './author.js'
 import Review from './review.js'
+import Order from './order.js'
 
 export default class Book extends BaseModel {
     @column({ isPrimary: true })
@@ -19,8 +20,8 @@ export default class Book extends BaseModel {
     @column()
     declare avatar: string
 
-    @column()
-    declare author_id: number
+    @column({ columnName: 'author_id' })
+    declare authorId: number
 
     @column()
     declare genre_id: number
@@ -51,6 +52,12 @@ export default class Book extends BaseModel {
 
     @manyToMany(() => Category)
     declare categories: ManyToMany<typeof Category>
+
+    @manyToMany(() => Order, {
+        pivotTable: 'cart_items',
+        pivotColumns: ['quantity'],
+    })
+    declare orders: ManyToMany<typeof Order>
 
     @belongsTo(() => Author)
     declare author: BelongsTo<typeof Author>

@@ -64,7 +64,7 @@ export default class AuthController {
         const user = await User.findByOrFail('email', email)
 
         // check if user is active
-        if (await bouncer.with(UserPolicy).denies('isActive')) {
+        if (await bouncer.with(UserPolicy).allows('isActive')) {
             return response.status(403).json({ message: 'Account is not active yet' })
         }
 

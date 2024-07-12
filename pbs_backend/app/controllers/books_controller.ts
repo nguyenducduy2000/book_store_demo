@@ -5,11 +5,26 @@ import BookPolicy from '#policies/book_policy'
 import { inject } from '@adonisjs/core'
 import { imageValidator } from '#validators/book'
 import BookService from '#services/book_service'
+import {
+    BookFactory,
+    AuthorFactory,
+    GenreFactory,
+    OrderFactory,
+} from '#database/factories/book_factory'
 
 export default class BooksController {
     // [GET] /books - display all books
     async index({}: HttpContext) {
         return Book.all()
+    }
+
+    async factory({}: HttpContext) {
+        // await AuthorFactory.create()
+        // await GenreFactory.create()
+        // const user = await BookFactory.createMany(10)
+        const order = await OrderFactory.create()
+        // return user
+        return order
     }
 
     // [GET] /books/:id - display a specific book

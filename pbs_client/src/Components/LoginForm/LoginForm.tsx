@@ -3,6 +3,7 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import './LoginForm.css';
 import Logo from '../../assets/logo.png';
 import { useLocation, useNavigate } from 'react-router-dom';
+import authService from '../../service/authService';
 
 const Login = () => {
     const [inputEmail, setInputEmail] = useState('');
@@ -26,19 +27,27 @@ const Login = () => {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         setLoading(true);
-        await delay(500);
-        console.log(`Username :${inputEmail}, Password :${inputPassword}`);
-        if (inputEmail !== 'admin' || inputPassword !== 'admin') {
+        try {
+            const response = await authService.login(inputEmail, inputPassword);
+            if (response) {
+                localStorage.setItem('token', response.token);
+                navigate('/');
+            } else {
+                setShow(true);
+                setLoading(false);
+            }
+        } catch (error) {
+            console.log(error);
             setShow(true);
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const handlePassword = () => {};
 
-    function delay(ms: number) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-    }
+    // function delay(ms: number) {
+    //     return new Promise((resolve) => setTimeout(resolve, ms));
+    // }
 
     return (
         <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
@@ -49,7 +58,7 @@ const Login = () => {
                     Incorrect username or password.
                 </Alert>
             )}
-            {inputUsername !== undefined && (
+            {location.pathname === '/register' && (
                 <Form.Group className="mb-2" controlId="username">
                     <Form.Label>Username</Form.Label>
                     <Form.Control

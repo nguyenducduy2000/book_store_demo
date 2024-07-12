@@ -8,7 +8,16 @@ export default class extends BaseSchema {
             table.increments('id')
             table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE')
             table.dateTime('order_date').notNullable()
-            table.integer('total_amount').notNullable()
+            table.integer('total_items').notNullable().defaultTo(0)
+            table.integer('total_price').notNullable().defaultTo(0)
+            table
+                .enum('payment_method', ['cash', 'card', 'visa', 'paypal'])
+                .notNullable()
+                .defaultTo('cash')
+            table
+                .enum('status', ['pending', 'processing', 'paid', 'cancelled'])
+                .notNullable()
+                .defaultTo('pending')
 
             table.timestamp('created_at')
             table.timestamp('updated_at')

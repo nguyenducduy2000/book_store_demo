@@ -2,41 +2,53 @@ import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 export default class UsersController {
     /**
-     * Display a list of resource
-     */
-    async index({}: HttpContext) {
-        const user = await User.all()
-        return user
-    }
-    /**
-     * Display form to create a new record
-     */
-    async create({}: HttpContext) {}
-
-    /**
-     * Handle form submission for the create action
-     */
-    async store({}: HttpContext) {}
-
-    /**
      * Show individual record
      */
-    async show({}: HttpContext) {}
+    async index({ auth }: HttpContext) {
+        // get user
+        const user = await auth.authenticate()
+        return user
+    }
+    async show({ auth }: HttpContext) {
+        // get user_id
+        const userParam = await auth.authenticate()
 
-    /**
-     * Edit individual record
-     */
-    async edit({}: HttpContext) {}
+        // const id = Number(request.param('id'))
+        // find user by id
+        const user = await User.findOrFail(userParam.id)
+
+        return user
+    }
 
     /**
      * Handle form submission for the edit action
      */
-    async update({}: HttpContext) {}
+    async update({ request, auth }: HttpContext) {
+        // get user id
+        const currentUser = await auth.authenticate()
+
+        const user = await User.findOrFail(currentUser.id)
+        user.username = request.input('username') || currentUser.username
+        user.password = request.input('password') || currentUser.password
+        user.dateOfBirth = request.input('dateOfBirth') || currentUser.dateOfBirth
+
+        await user.save()
+        return user
+    }
 
     /**
      * Delete record
      */
-    async destroy({}: HttpContext) {}
+    async destroy({ auth }: HttpContext) {
+        // get user
+        const user = await auth.authenticate()
+
+        // delete user
+        await user.delete()
+
+        // Return a success message
+        return { message: 'User deleted successfully' }
+    }
 }
 
 /**

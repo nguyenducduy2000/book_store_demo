@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
-import OrderItem from './order_item.js'
-import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, belongsTo, column, manyToMany } from '@adonisjs/lucid/orm'
+// import OrderItem from './order_item.js'
+import type { BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
 import User from './user.js'
+import Book from './book.js'
 
 export default class Order extends BaseModel {
     @column({ isPrimary: true })
@@ -14,14 +15,26 @@ export default class Order extends BaseModel {
     @column({ columnName: 'order_date' })
     declare orderDate: Date
 
-    @column({ columnName: 'total_ammount' })
+    @column({ columnName: 'total_items' })
     declare totalAmmount: number
+
+    @column({ columnName: 'total_price' })
+    declare totalPrice: number
+
+    @column({ columnName: 'payment_method' })
+    declare paymentMethod: 'cash' | 'card' | 'visa' | 'paypal'
+
+    @column()
+    declare status: 'pending' | 'processing' | 'paid' | 'cancelled'
 
     @belongsTo(() => User, { foreignKey: 'user_id' })
     declare user: BelongsTo<typeof User>
 
-    @hasMany(() => OrderItem, { foreignKey: 'order_id' })
-    declare orderItems: HasMany<typeof OrderItem>
+    @manyToMany(() => Book, {
+        pivotTable: 'cart_items',
+        pivotColumns: ['quantity'],
+    })
+    declare books: ManyToMany<typeof Book>
 
     @column.dateTime({ autoCreate: true })
     declare createdAt: DateTime
