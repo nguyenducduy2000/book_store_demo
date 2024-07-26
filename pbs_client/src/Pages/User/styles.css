@@ -1,0 +1,32 @@
+/* App.css */
+
+.site-layout-content {
+    background: #fff;
+    padding: 24px;
+    margin: 0;
+    min-height: 280px;
+    color: #000;
+}
+
+.logo {
+    height: 32px;
+    margin: 16px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.ant-menu-dark.ant-menu-inline .ant-menu-item {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.ant-menu-dark.ant-menu-inline .ant-menu-item-selected {
+    background-color: #1890ff;
+    color: #fff;
+}
+
+.ant-tabs-tab-btn {
+    color: #000;
+}
+
+.ant-tabs-nav-wrap {
+    margin-bottom: 16px;
+}

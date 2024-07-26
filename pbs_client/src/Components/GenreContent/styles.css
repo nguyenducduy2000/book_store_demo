@@ -1,0 +1,12 @@
+ul {
+    list-style-type: none; /* Removes the default list style */
+    padding: 0; /* Removes padding */
+}
+
+li {
+    padding: 5px 0; /* Adds vertical spacing between list items */
+}
+
+h3 {
+    color: #333; /* Dark grey color for headings */
+}

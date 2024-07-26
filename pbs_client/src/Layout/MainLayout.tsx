@@ -8,11 +8,11 @@ type LayoutProps = {
 };
 const MainLayout: React.FC<LayoutProps> = ({ children }) => {
     return (
-        <>
+        <div className="d-flex flex-fill flex-column">
             <Header />
             <div className="wrapper">{children}</div>
             <Footer />
-        </>
+        </div>
     );
 };
 export default MainLayout;

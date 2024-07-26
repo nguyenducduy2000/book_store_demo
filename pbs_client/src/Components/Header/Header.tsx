@@ -1,31 +1,59 @@
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import { useState, useEffect } from 'react';
-import { Button, Container, Nav, Navbar } from 'react-bootstrap';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link } from 'react-router-dom';
-// import { jwtDecode } from 'jwt-decode';
-import { userService } from '../../service';
-
+import {
+    AppBar,
+    Toolbar,
+    IconButton,
+    Typography,
+    Menu,
+    Container,
+    Avatar,
+    Button,
+    MenuItem,
+    Box,
+    Badge,
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import AdbIcon from '@mui/icons-material/Adb';
+import SearchIcon from '@mui/icons-material/Search';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { Popover } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import ModalForm from '../ModalForm';
+import { userService, orderService } from '../../service/httpServices';
+import { Search, SearchIconWrapper, StyledInputBase } from '../Search';
+import GenreContent from '../GenreContent';
+import useOrderState from '../../store/useOrderStore';
+import { useModalState } from '../../store';
+import { toast } from 'react-toastify';
 const Header: React.FC = () => {
     const [isLogin, setIsLogin] = useState(false);
     const [user, setUser] = useState(null);
+    const navigate = useNavigate();
+    const { orderItem, setOrderItem } = useOrderState();
+    const { toggleShow } = useModalState();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-        if (token) {
-            userService
-                .index()
-                .then((userData) => {
-                    setUser(userData.username);
+        const fetchData = async () => {
+            try {
+                if (token) {
+                    const [userData, orderData] = await Promise.all([userService.index(), orderService.getOrderItem()]);
+                    // console.log({ userData, orderData });
+                    setUser(userData);
+                    setOrderItem(orderData);
                     setIsLogin(true);
-                })
-                .catch(() => {
-                    setIsLogin(false);
-                    // console.error('Failed to fetch user data:', error);
-                });
-        }
-    }, []);
+                }
+            } catch (error) {
+                // if no data is fetch, get data from local storage
+                console.error('Error fetching data:', error);
+                setIsLogin(false);
+            }
+        };
+        fetchData();
+    }, [setOrderItem]);
 
     // const checkIfTokenExpired = (token: string): boolean => {
     //     try {
@@ -41,67 +69,188 @@ const Header: React.FC = () => {
     //     }
     // };
 
+    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+    const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElNav(event.currentTarget);
+    };
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+    const handleCloseNavMenu = () => {
+        setAnchorElNav(null);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
+
+    const handleLogout = () => {
+        try {
+            if (confirm('Are you sure you want to logout?')) {
+                handleCloseUserMenu();
+                localStorage.removeItem('token');
+                setIsLogin(false);
+                navigate('/');
+                toast.success('Logout successfully');
+            }
+        } catch (error) {
+            console.error('Error logging out:', error);
+            toast.error('Error logging out');
+        }
+    };
+
     return (
-        <Navbar expand="lg" sticky="top" style={{ backgroundColor: '#e3f2fd' }}>
-            <Container fluid="xxl">
-                <Navbar.Brand>Bookstore</Navbar.Brand>
-                <Nav className="me-auto mb-2 mb-lg-0" variant="underline" defaultActiveKey="/">
-                    <Nav.Item>
-                        <Link className={clsx('nav-link')} to={'/'}>
-                            Home
-                        </Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Link className={clsx('nav-link')} to={'/category'}>
-                            Category
-                        </Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Button aria-controls="example-collapse-text">Filter</Button>
-                    </Nav.Item>
-                </Nav>
-                <Nav className="ml-auto d-flex align-items-center">
-                    {isLogin ? (
-                        <div className="d-flex align-items-center">
-                            <Nav.Item className="d-flex align-items-center">
-                                <p className="mb-0 mr-2">Hello,</p>
-                                <Link className={clsx('nav-link')} to={'/profile'}>
-                                    {user}
-                                </Link>
-                            </Nav.Item>
-                            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                            <Navbar.Collapse id="basic-navbar-nav">
-                                <NavDropdown className="d-flex align-items-center" title="" id="basic-nav-dropdown">
-                                    <NavDropdown.Item>
-                                        <Link className={clsx('nav-link')} to={'/profile'}>
+        <>
+            <AppBar position="static">
+                <Container maxWidth="xl">
+                    <Toolbar disableGutters>
+                        <AdbIcon sx={{ display: 'flex', mr: 1 }} />
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="a"
+                            href=""
+                            onClick={() => navigate('/')}
+                            sx={{
+                                mr: 2,
+                                display: 'flex',
+                                fontFamily: 'monospace',
+                                fontWeight: 700,
+                                letterSpacing: '.3rem',
+                                color: 'inherit',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            BookStore
+                        </Typography>
+                        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                            <IconButton
+                                size="large"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={handleOpenNavMenu}
+                                color="inherit"
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Menu
+                                id="menu-appbar"
+                                anchorEl={anchorElNav}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                                open={Boolean(anchorElNav)}
+                                onClose={handleCloseNavMenu}
+                                sx={{
+                                    display: { xs: 'block', md: 'none' },
+                                }}
+                            ></Menu>
+                        </Box>
+                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                            <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+                                News
+                            </Button>
+                            <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+                                Contact
+                            </Button>
+                            <Popover content={<GenreContent />} trigger="hover">
+                                <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+                                    Genre
+                                </Button>
+                            </Popover>
+                            {/* 
+                            <Search sx={{ my: 2, width: '100%', flexGrow: 0 }}>
+                                <SearchIconWrapper>
+                                    <SearchIcon />
+                                </SearchIconWrapper>
+                                <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+                            </Search> */}
+                        </Box>
+                        <Box sx={{ mr: 2 }}>
+                            <IconButton size="large" color="inherit" onClick={() => navigate('/cart')}>
+                                <Badge
+                                    badgeContent={orderItem && orderItem.books && orderItem.books.length}
+                                    color="error"
+                                >
+                                    <ShoppingCartIcon />
+                                </Badge>
+                            </IconButton>
+                        </Box>
+                        {isLogin ? (
+                            <Box sx={{ flexGrow: 0 }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                        <Avatar alt={user.username} src={user.avatar || 'https://i.pravatar.cc/300'} />
+                                        <Typography sx={{ color: 'white', mx: 1 }}>hello {user.username}</Typography>
+                                    </IconButton>
+                                </Box>
+                                <Menu
+                                    sx={{ mt: '45px' }}
+                                    id="menu-appbar"
+                                    anchorEl={anchorElUser}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={Boolean(anchorElUser)}
+                                    onClose={handleCloseUserMenu}
+                                >
+                                    <MenuItem onClick={handleCloseUserMenu}>
+                                        <Typography textAlign="center" onClick={() => navigate('/account')}>
                                             Profile
-                                        </Link>
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item>
-                                        <Link className={clsx('nav-link')} to={'/logout'}>
-                                            Logout
-                                        </Link>
-                                    </NavDropdown.Item>
-                                </NavDropdown>
-                            </Navbar.Collapse>
-                        </div>
-                    ) : (
-                        <div className="d-flex">
-                            <Nav.Item>
-                                <Link className={clsx('nav-link')} to={'/login'}>
-                                    Login
-                                </Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Link className={clsx('nav-link')} to={'/register'}>
-                                    Register
-                                </Link>
-                            </Nav.Item>
-                        </div>
-                    )}
-                </Nav>
-            </Container>
-        </Navbar>
+                                        </Typography>
+                                    </MenuItem>
+                                    {user.isAdmin && (
+                                        <MenuItem onClick={handleCloseUserMenu}>
+                                            <Typography
+                                                textAlign="center"
+                                                onClick={() => {
+                                                    toggleShow();
+                                                }}
+                                            >
+                                                Create new book
+                                            </Typography>
+                                        </MenuItem>
+                                    )}
+
+                                    <MenuItem onClick={handleLogout}>
+                                        <Typography textAlign="center">Logout</Typography>
+                                    </MenuItem>
+                                </Menu>
+                            </Box>
+                        ) : (
+                            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                                <Button color="inherit" sx={{ color: 'white' }}>
+                                    <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                        Login
+                                    </Link>
+                                </Button>
+                                <Button color="inherit" sx={{ color: 'white' }}>
+                                    <Link to="/register" style={{ color: 'inherit', textDecoration: 'none' }}>
+                                        Register
+                                    </Link>
+                                </Button>
+                            </Box>
+                        )}
+                    </Toolbar>
+                </Container>
+            </AppBar>
+            <ModalForm />
+        </>
     );
 };
 

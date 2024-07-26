@@ -20,7 +20,6 @@ export default class BookService {
     }
 
     async UpdateBook(data: any) {
-        console.log(data.id)
         // get book from database
         const book = await Book.find(data.id)
         if (!book) {
@@ -31,8 +30,6 @@ export default class BookService {
         book.description = data.description || book?.description
         book.price = data.price || book?.price
         book.stock = data.stock || book?.stock
-        book.author_id = data.author_id || book?.author_id
-        book.genre_id = data.genre_id || book?.genre_id
         book.isbn = data.isbn || book?.isbn
         book.avatar = data.avatar || book?.avatar
 

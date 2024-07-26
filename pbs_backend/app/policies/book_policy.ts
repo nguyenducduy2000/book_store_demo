@@ -14,14 +14,16 @@ export default class BookPolicy extends BasePolicy {
     /**
      * Only the book creator can edit the book
      */
-    edit(user: User, book: Book): AuthorizerResponse {
-        return user.id === book.pub_id
+    edit(user: User): AuthorizerResponse {
+        // return user.id === book.pub_id
+        return user.isAdmin
     }
 
     /**
      * Only the book creator can delete the book
      */
-    delete(user: User, book: Book): AuthorizerResponse {
-        return user.id === book.pub_id
+    delete(user: User): AuthorizerResponse {
+        // return user.id === book.pub_id
+        return user.isAdmin
     }
 }

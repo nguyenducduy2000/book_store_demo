@@ -3,14 +3,21 @@ import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 // import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import parseDuration from 'parse-duration'
-
+import hash from '@adonisjs/core/services/hash'
+import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { JwtAccessTokenProvider, JwtSecret } from '#providers/jwt_access_token_provider'
 import Book from './book.js'
 import Order from './order.js'
 import { DateTime } from 'luxon'
 import Review from './review.js'
+import { compose } from '@adonisjs/core/helpers'
 
-export default class User extends BaseModel {
+const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
+    uids: ['email'],
+    passwordColumnName: 'password',
+})
+
+export default class User extends compose(BaseModel, AuthFinder) {
     @column({ isPrimary: true })
     declare id: number
 

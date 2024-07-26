@@ -10,15 +10,13 @@ export default class PaginationMiddleware {
         const { request } = ctx
 
         ctx.pagination = {
-            perPage: request.input('perPage', 10),
-            page: request.input('page', 1),
+            perPage: Number(request.input('perPage', 12)),
+            page: Number(request.input('page', 1)),
         }
-        console.log(ctx.pagination)
 
         /**
          * Call next method in the pipeline and return its output
          */
-        const output = await next()
-        return output
+        await next()
     }
 }

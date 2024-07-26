@@ -4,11 +4,14 @@ export default class UsersController {
     /**
      * Show individual record
      */
+    // [GET] /
     async index({ auth }: HttpContext) {
         // get user
         const user = await auth.authenticate()
         return user
     }
+
+    // [GET] /user/:id
     async show({ auth }: HttpContext) {
         // get user_id
         const userParam = await auth.authenticate()
@@ -23,6 +26,7 @@ export default class UsersController {
     /**
      * Handle form submission for the edit action
      */
+    // [POST] /user/edit
     async update({ request, auth }: HttpContext) {
         // get user id
         const currentUser = await auth.authenticate()
@@ -39,6 +43,7 @@ export default class UsersController {
     /**
      * Delete record
      */
+    // [DELETE] /user/delete
     async destroy({ auth }: HttpContext) {
         // get user
         const user = await auth.authenticate()

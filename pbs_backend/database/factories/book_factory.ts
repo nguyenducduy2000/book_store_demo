@@ -4,6 +4,7 @@ import Author from '#models/author'
 import Genre from '#models/genre'
 import Category from '#models/category'
 import Order from '#models/order'
+import User from '#models/user'
 
 export const AuthorFactory = factory
     .define(Author, async ({ faker }) => {
@@ -35,21 +36,20 @@ export const BookFactory = factory
             description: faker.commerce.productDescription(),
             price: 100000,
             stock: faker.number.int({ min: 1, max: 10 }),
-            author_id: 1,
-            genre_id: 1,
             isbn: 1000,
         }
     })
+    .relation('author', () => AuthorFactory)
     .build()
 
 export const OrderFactory = factory
     .define(Order, async () => {
         return {
-            user_id: 1,
-            order_date: new Date(),
-            payment_method: 'cash',
-            totalAmmount: 0,
+            user_id: 2,
+            totalItems: 0,
             totalPrice: 0,
+            payment_method: 'cash',
+            status: 'pending',
         }
     })
     .build()

@@ -7,7 +7,6 @@ export default class extends BaseSchema {
         this.schema.createTable(this.tableName, (table) => {
             table.increments('id')
             table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE')
-            table.dateTime('order_date').notNullable()
             table.integer('total_items').notNullable().defaultTo(0)
             table.integer('total_price').notNullable().defaultTo(0)
             table
@@ -19,8 +18,8 @@ export default class extends BaseSchema {
                 .notNullable()
                 .defaultTo('pending')
 
-            table.timestamp('created_at')
-            table.timestamp('updated_at')
+            table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(this.now())
+            table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(this.now())
         })
     }
 

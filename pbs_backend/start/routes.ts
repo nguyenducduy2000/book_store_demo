@@ -17,31 +17,34 @@ const GenresController = () => import('#controllers/genres_controller')
 const CategoriesController = () => import('#controllers/categories_controller')
 const CartsController = () => import('#controllers/carts_controller')
 const UsersController = () => import('#controllers/users_controller')
-// import Author from '#models/author'
+// const pagination = () => import('#middleware/pagination_middleware')
 
-router.get('/', [UsersController, 'index'])
+router.get('/', [BooksController, 'index'])
 router.post('/register', [AuthController, 'register'])
-router.get('/verify-email', [AuthController, 'verify']).as('verifyEmail')
+// router.get('/verify-email', [AuthController, 'verify']).as('verifyEmail')
 router.post('/login', [AuthController, 'login'])
+router.get('/test', [AuthController, 'index'])
 
 router
     .group(() => {
-        router.get('/books', [BooksController, 'index'])
-        router.get('/books/:id', [BooksController, 'show'])
+        router.get('/', [BooksController, 'index'])
+        router.get('/latest', [BooksController, 'getLastestBooks'])
+        router.get('/:id', [BooksController, 'show'])
         router
             .group(() => {
-                router.post('/books', [BooksController, 'store'])
-                router.patch('/books', [BooksController, 'update'])
-                router.delete('/books', [BooksController, 'destroy'])
+                router.post('/create', [BooksController, 'store'])
+                router.put('/edit', [BooksController, 'update'])
+                router.delete('/delete', [BooksController, 'destroy'])
             })
             .use(middleware.auth({ guards: ['api'] }))
         // factory for testing
-        router.post('/books/factory', [BooksController, 'factory'])
+        router.post('/factory', [BooksController, 'factory'])
     })
-    .prefix('/api/v1')
+    .prefix('/books')
 
 router
     .group(() => {
+        router.get('/', [UsersController, 'index'])
         router.get('/:id', [UsersController, 'show'])
         router.patch('/edit', [UsersController, 'update'])
         router.delete('/delete', [UsersController, 'destroy'])
@@ -52,8 +55,11 @@ router
 router
     .group(() => {
         router.get('/', [GenresController, 'index'])
+        router.get('/:genreId', [GenresController, 'display']).use(middleware.pagination())
+        router.post('/create', [GenresController, 'store'])
+        router.delete('/delete', [GenresController, 'destroy'])
     })
-    .prefix('/genre')
+    .prefix('/genres')
 
 router
     .group(() => {
@@ -65,7 +71,7 @@ router
     .group(() => {
         router.get('', [CartsController, 'index'])
         router.post('/create', [CartsController, 'addItem'])
-        router.patch('/update', [CartsController, 'update'])
+        router.put('/update', [CartsController, 'update'])
         router.delete('/delete', [CartsController, 'destroy'])
     })
     .prefix('/cart')
@@ -73,6 +79,7 @@ router
 router
     .group(() => {
         router.get('/', [OrdersController, 'index'])
-        router.get('/update', [OrdersController, 'update'])
+        router.post('/create', [OrdersController, 'createInstantOrder'])
+        router.delete('/cancel/:id', [OrdersController, 'cancelInstanceOrder'])
     })
     .prefix('/order')

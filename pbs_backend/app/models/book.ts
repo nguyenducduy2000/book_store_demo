@@ -24,9 +24,6 @@ export default class Book extends BaseModel {
     declare authorId: number
 
     @column()
-    declare genre_id: number
-
-    @column()
     declare isbn: number
 
     @column()
@@ -36,7 +33,7 @@ export default class Book extends BaseModel {
     declare stock: number
 
     @column({ columnName: 'publisher_id' })
-    declare pub_id: number
+    declare pubId: number
 
     @column.dateTime({ autoCreate: true })
     declare createdAt: DateTime
@@ -47,7 +44,9 @@ export default class Book extends BaseModel {
     @hasMany(() => Review, { foreignKey: 'book_id' })
     declare reviews: HasMany<typeof Review>
 
-    @manyToMany(() => Genre)
+    @manyToMany(() => Genre, {
+        pivotTable: 'book_genres',
+    })
     declare genres: ManyToMany<typeof Genre>
 
     @manyToMany(() => Category)
@@ -62,10 +61,10 @@ export default class Book extends BaseModel {
     @belongsTo(() => Author)
     declare author: BelongsTo<typeof Author>
 
-    @beforeSave()
-    static async beforeSave(book: Book) {
-        if (book.$dirty.avatar) {
-            book.avatar = JSON.stringify(book.avatar)
-        }
-    }
+    // @beforeSave()
+    // static async beforeSave(book: Book) {
+    //     if (book.$dirty.avatar) {
+    //         book.avatar = JSON.stringify(book.avatar)
+    //     }
+    // }
 }

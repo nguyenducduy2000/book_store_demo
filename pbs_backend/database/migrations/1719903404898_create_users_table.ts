@@ -11,7 +11,7 @@ export default class extends BaseSchema {
             table.string('email', 254).notNullable()
             table.date('date_of_birth').nullable()
             table.boolean('is_admin').defaultTo(false)
-            table.boolean('is_active').defaultTo(false)
+            table.boolean('is_active').defaultTo(true)
 
             table.timestamp('created_at').notNullable()
             table.timestamp('updated_at').nullable()
