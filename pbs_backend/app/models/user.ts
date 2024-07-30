@@ -24,7 +24,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
     @column()
     declare username: string | null
 
-    @column()
+    @column({ serializeAs: null })
     declare password: string
 
     @column()
@@ -32,6 +32,12 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
     @column({ columnName: 'date_of_birth' })
     declare dateOfBirth: Date | null
+
+    @column({ columnName: 'phone_number' })
+    declare phoneNumber: string | null
+
+    @column({ columnName: 'address' })
+    declare address: string | null
 
     @column({ columnName: 'is_admin' })
     declare isAdmin: boolean

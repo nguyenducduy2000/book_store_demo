@@ -31,6 +31,12 @@ export default class Order extends BaseModel {
     @column()
     declare status: 'pending' | 'processing' | 'paid' | 'cancelled'
 
+    @column({ columnName: 'client_phone_number' })
+    declare clientPhoneNumber: string | null
+
+    @column({ columnName: 'delivery_address' })
+    declare deliveryAddress: string | null
+
     @belongsTo(() => User, { foreignKey: 'user_id' })
     declare user: BelongsTo<typeof User>
 

@@ -22,7 +22,9 @@ function Home() {
                 setNewBooks(latestBooks);
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching data:', {
+                    message: error.message,
+                });
             }
         };
 

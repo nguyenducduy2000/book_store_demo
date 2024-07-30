@@ -12,7 +12,7 @@ interface PaginationState {
         nextPageUrl: string | null;
         previousPageUrl: string | null;
     };
-    setPaginationPage: (data: object) => void;
+    setPaginationPage: (data: PaginationState['paginationPage']) => void;
     setCurrentPage: (page: number) => void;
 }
 

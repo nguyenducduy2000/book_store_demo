@@ -30,7 +30,7 @@ const BookList: React.FC<BookListProps> = ({ title, books, category }) => {
         try {
             event.stopPropagation();
             const response = await orderService.addCartItem(id);
-            setOrderItem({ ...orderItem, books: [...orderItem.books, response] });
+            setOrderItem(response);
             toast.success('Book added to cart successfully');
         } catch (error) {
             console.error('Error adding book to cart:', error);

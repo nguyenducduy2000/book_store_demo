@@ -27,17 +27,23 @@ export default class UsersController {
      * Handle form submission for the edit action
      */
     // [POST] /user/edit
-    async update({ request, auth }: HttpContext) {
-        // get user id
-        const currentUser = await auth.authenticate()
+    async update({ request, auth, response }: HttpContext) {
+        try {
+            // get user id
+            const currentUser = await auth.authenticate()
 
-        const user = await User.findOrFail(currentUser.id)
-        user.username = request.input('username') || currentUser.username
-        user.password = request.input('password') || currentUser.password
-        user.dateOfBirth = request.input('dateOfBirth') || currentUser.dateOfBirth
-
-        await user.save()
-        return user
+            const user = await User.findOrFail(currentUser.id)
+            user.merge({
+                username: request.input('username', currentUser.username),
+                dateOfBirth: request.input('dob', currentUser.dateOfBirth),
+                phoneNumber: request.input('phoneNumber', currentUser.phoneNumber),
+                address: request.input('address', currentUser.address),
+            })
+            await user.save()
+            return response.ok(user)
+        } catch (error) {
+            response.badRequest(error.message)
+        }
     }
 
     /**

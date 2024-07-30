@@ -5,12 +5,38 @@ import { DateTime } from 'luxon'
 export default class OrdersController {
     // [GET] /orders
     async index({ auth }: HttpContext) {
+        // authenticate the user
         const user = await auth.authenticate()
         const orders = await Order.query()
             .where('user_id', user.id)
             .where('status', 'instant')
             .preload('books')
         return orders
+    }
+
+    async checkout({ request, auth, response }: HttpContext) {
+        try {
+            // authenticate the user
+            const user = await auth.authenticate()
+            const data = await request.body()
+
+            // update the order
+            const order = await Order.query()
+                .where('user_id', user.id)
+                .where('status', 'pending')
+                .firstOrFail()
+
+            order.merge({
+                status: request.input('status', order.status),
+                clientPhoneNumber: request.input('phoneNumber', order.clientPhoneNumber),
+                deliveryAddress: request.input('address', order.deliveryAddress),
+                paymentMethod: request.input('paymentMethod', order.paymentMethod),
+            })
+            await order.save()
+            response.status(200).json(order)
+        } catch (error) {
+            response.status(500).json({ message: 'Error occurred while fetching books' })
+        }
     }
 
     // [POST] /orders/create

@@ -10,6 +10,8 @@ export default class extends BaseSchema {
             table.string('password').notNullable()
             table.string('email', 254).notNullable()
             table.date('date_of_birth').nullable()
+            table.string('phone_number').nullable()
+            table.string('address').nullable()
             table.boolean('is_admin').defaultTo(false)
             table.boolean('is_active').defaultTo(true)
 

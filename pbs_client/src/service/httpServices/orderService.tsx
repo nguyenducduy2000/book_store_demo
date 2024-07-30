@@ -85,4 +85,20 @@ export default {
             return data;
         });
     },
+
+    checkout: (data: object) => {
+        const options = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token'),
+            },
+            method: 'PUT',
+            url: `/order/checkout`,
+            data: data,
+        };
+        return httpRequest(options).then((res) => {
+            const data = res.data;
+            // console.log(data);
+            return data;
+        });
+    },
 };

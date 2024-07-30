@@ -48,7 +48,10 @@ const Header: React.FC = () => {
                 }
             } catch (error) {
                 // if no data is fetch, get data from local storage
-                console.error('Error fetching data:', error);
+                console.error('Error fetching data:', {
+                    status: error.code || 'unknown',
+                    message: error.message || 'Unknown error',
+                });
                 setIsLogin(false);
             }
         };

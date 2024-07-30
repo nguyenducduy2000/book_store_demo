@@ -1,57 +1,64 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, Select, Radio } from 'antd';
-
+import { userService } from '../../service/httpServices';
+import useUserStore from '../../store/useUserStore';
 const { Option } = Select;
 
-const CheckoutForm = () => {
-    return (
-        <Form layout="vertical">
-            <h3>Thông tin nhận hàng</h3>
-            <Form.Item label="Số địa chỉ">
-                <Select>
-                    <Option value="address1">Địa chỉ khác...</Option>
-                </Select>
-            </Form.Item>
-            <Form.Item label="Email">
-                <Input value="nguyenducduy2000@gmail.com" readOnly />
-            </Form.Item>
-            <Form.Item label="Họ và tên">
-                <Input value="Duy Nguyễn" />
-            </Form.Item>
-            <Form.Item label="Số điện thoại (tùy chọn)">
-                <Input addonAfter={<img src="path/to/flag.png" alt="flag" />} />
-            </Form.Item>
-            <Form.Item label="Địa chỉ (tùy chọn)">
-                <Input />
-            </Form.Item>
-            <Form.Item label="Tỉnh thành">
-                <Select>
-                    <Option value="an-giang">An Giang</Option>
-                </Select>
-            </Form.Item>
-            <Form.Item label="Quận huyện (tùy chọn)">
-                <Select>
-                    <Option value="quanhuyen1">---</Option>
-                </Select>
-            </Form.Item>
-            <Form.Item label="Phường xã (tùy chọn)">
-                <Select>
-                    <Option value="phuongxa1">---</Option>
-                </Select>
-            </Form.Item>
-            <Form.Item label="Ghi chú (tùy chọn)">
-                <Input.TextArea />
-            </Form.Item>
+const CheckoutForm = ({ form }) => {
+    const { user, setUser } = useUserStore();
 
-            <h3>Vận chuyển</h3>
-            <Radio.Group defaultValue="delivery">
-                <Radio value="delivery">Giao hàng tận nơi 40.000đ</Radio>
-            </Radio.Group>
+    useEffect(() => {
+        const fetchData = async () => {
+            const token = localStorage.getItem('token');
+            try {
+                if (token) {
+                    const response = await userService.index();
+                    setUser(response);
+                    form.setFieldsValue({
+                        email: response.email,
+                        username: response.username,
+                        phoneNumber: response.phoneNumber,
+                        address: response.address,
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching data:', {
+                    status: error.code || 'unknown status',
+                    message: error.message || 'Unknown error',
+                });
+            }
+        };
+        fetchData();
+    }, [setUser, form]);
+
+    return (
+        <Form form={form} layout="vertical">
+            <h3 className="mb-3">Thông tin nhận hàng</h3>
+            <Form.Item label="Email" name="email">
+                <Input readOnly disabled />
+            </Form.Item>
+            <Form.Item label="Họ và tên" name="username">
+                <Input disabled />
+            </Form.Item>
+            <Form.Item label="Số điện thoại (tùy chọn)" name="phoneNumber">
+                <Input placeholder="VD: 0123..." />
+            </Form.Item>
+            <Form.Item label="Địa chỉ" name="address">
+                <Input placeholder="Nhập địa chỉ vào đây" />
+            </Form.Item>
+            <Form.Item label="Ghi chú (tùy chọn)" name="note">
+                <Input.TextArea placeholder="Ghi chú cho nhân viên giao hàng" />
+            </Form.Item>
 
             <h3>Thanh toán</h3>
-            <Radio.Group defaultValue="cod">
-                <Radio value="cod">Thanh toán khi giao hàng (COD)</Radio>
-            </Radio.Group>
+            <Form.Item name="payment" initialValue="cash">
+                <Radio.Group className="d-flex flex-column mb-3">
+                    <Radio value="cash">Thanh toán khi giao hàng (COD)</Radio>
+                    <Radio value="card">Thanh toán bằng thẻ ngân hàng nội địa</Radio>
+                    <Radio value="visa">Thanh toán bằng thẻ Visa</Radio>
+                    <Radio value="paypal">Thanh toán bằng paypal</Radio>
+                </Radio.Group>
+            </Form.Item>
         </Form>
     );
 };

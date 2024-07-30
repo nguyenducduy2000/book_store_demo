@@ -16,7 +16,7 @@ interface BookView {
         author: object | any;
         genres: Array[any] | any;
     };
-    setBooks: (data: object) => void;
+    setBooks: (data: BookView['book']) => void;
 }
 
 const useBookView = create<BookView>((set) => ({

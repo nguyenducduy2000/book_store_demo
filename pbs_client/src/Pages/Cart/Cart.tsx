@@ -157,7 +157,12 @@ const Cart = () => {
                         <br />
                         <Checkbox style={{ marginTop: 10 }}>Xuất hóa đơn công ty</Checkbox>
                         <br />
-                        <Button type="primary" size="large" style={{ marginTop: 20, width: '100%' }}>
+                        <Button
+                            type="primary"
+                            size="large"
+                            style={{ marginTop: 20, width: '100%' }}
+                            onClick={() => navigate('/checkout')}
+                        >
                             Check out
                         </Button>
                     </div>

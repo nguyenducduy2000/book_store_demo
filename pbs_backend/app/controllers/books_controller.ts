@@ -195,7 +195,7 @@ export default class BooksController {
     async update({ request, bouncer, response, auth }: HttpContext) {
         // Check if the user's role is admin
         const user = await auth.authenticate()
-        if (await bouncer.with('BookPolicy').allows('edit')) {
+        if (await bouncer.with('BookPolicy').denies('edit')) {
             return response.status(403).json({ message: 'Unauthorized' })
         }
 
@@ -244,10 +244,12 @@ export default class BooksController {
 
                 newAvatarUrl = await uploadToCloudinary()
 
-                // Extract the old avatar's public_id
-                const urlParts = book.avatar.split('/')
-                const publicIdWithExtension = urlParts[urlParts.length - 1]
-                oldAvatarPublicId = `uploads/${publicIdWithExtension.split('.')[0]}`
+                // Extract the old avatar's public_id if it exists
+                if (book.avatar) {
+                    const urlParts = book.avatar.split('/')
+                    const publicIdWithExtension = urlParts[urlParts.length - 1]
+                    oldAvatarPublicId = `uploads/${publicIdWithExtension.split('.')[0]}`
+                }
             } catch (error) {
                 console.error('Cloudinary upload error:', error)
                 return response.status(500).json({ message: 'Image upload failed' })
@@ -307,7 +309,7 @@ export default class BooksController {
     async destroy({ request, bouncer, response }: HttpContext) {
         try {
             // check if user's role is admin
-            if (await bouncer.with(BookPolicy).allows('delete')) {
+            if (await bouncer.with(BookPolicy).denies('delete')) {
                 return response.status(403).json({ message: 'Unauthorized' })
             }
             // get id from request

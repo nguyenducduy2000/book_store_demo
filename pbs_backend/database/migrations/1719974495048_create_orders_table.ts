@@ -17,7 +17,8 @@ export default class extends BaseSchema {
                 .enum('status', ['pending', 'processing', 'paid', 'cancelled'])
                 .notNullable()
                 .defaultTo('pending')
-
+            table.string('client_phone_number').nullable()
+            table.string('delivery_address').nullable()
             table.timestamp('created_at', { useTz: true }).notNullable().defaultTo(this.now())
             table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(this.now())
         })

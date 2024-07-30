@@ -100,7 +100,10 @@ const CreateBookModal = () => {
                 setFileList([]); // Ensure file list is reset after updating
             }
         } catch (error) {
-            console.error('Error updating book:', error);
+            console.error('Error fetching data:', {
+                status: error.code || 'unknown status',
+                message: error.message || 'Unknown error',
+            });
             toast.error('Error updating book');
         }
     };

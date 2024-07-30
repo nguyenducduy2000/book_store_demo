@@ -64,7 +64,6 @@ export default class CartsController {
             await order.save()
         }
 
-        // The order should now be persisted, so we can safely access relationships
         const existingBook = await order
             .related('books')
             .pivotQuery()

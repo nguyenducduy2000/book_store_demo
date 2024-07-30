@@ -15,4 +15,20 @@ export default {
             return data;
         });
     },
+
+    update: async (data: object) => {
+        const options = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token'),
+            },
+            method: 'PUT',
+            url: '/user/edit',
+            data: data,
+        };
+        return httpRequest(options).then((res) => {
+            const data = res.data;
+            // console.log(data);
+            return data;
+        });
+    },
 };

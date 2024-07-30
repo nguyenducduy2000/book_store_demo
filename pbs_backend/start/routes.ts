@@ -46,7 +46,7 @@ router
     .group(() => {
         router.get('/', [UsersController, 'index'])
         router.get('/:id', [UsersController, 'show'])
-        router.patch('/edit', [UsersController, 'update'])
+        router.put('/edit', [UsersController, 'update'])
         router.delete('/delete', [UsersController, 'destroy'])
     })
     .prefix('/user')
@@ -78,8 +78,9 @@ router
 
 router
     .group(() => {
-        router.get('/', [OrdersController, 'index'])
+        router.put('/checkout', [OrdersController, 'checkout'])
         router.post('/create', [OrdersController, 'createInstantOrder'])
         router.delete('/cancel/:id', [OrdersController, 'cancelInstanceOrder'])
+        router.get('/', [OrdersController, 'index'])
     })
     .prefix('/order')
