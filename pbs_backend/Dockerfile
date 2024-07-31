@@ -29,7 +29,7 @@ COPY --from=build /app/package*.json /app/build
 # Install production dependencies
 WORKDIR /app/build
 
-RUN npm install 
+RUN npm install --production
 
 EXPOSE 3333
 
