@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
-import { Form, Input, Select, Radio } from 'antd';
+import { useEffect } from 'react';
+import { Form, Input, Radio } from 'antd';
 import { userService } from '../../service/httpServices';
 import useUserStore from '../../store/useUserStore';
-const { Option } = Select;
 
 const CheckoutForm = ({ form }) => {
-    const { user, setUser } = useUserStore();
+    const { setUser } = useUserStore();
 
     useEffect(() => {
         const fetchData = async () => {

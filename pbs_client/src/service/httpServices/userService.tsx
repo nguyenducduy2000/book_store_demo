@@ -16,7 +16,7 @@ export default {
         });
     },
 
-    update: async (data: object) => {
+    update: async (data: object | any) => {
         const options = {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token'),

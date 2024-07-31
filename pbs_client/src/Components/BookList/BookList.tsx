@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Card, Pagination } from 'antd';
 import { HeartOutlined } from '@ant-design/icons';
 import './styles.css'; // Import the CSS file
@@ -8,18 +8,17 @@ import useOrderState from '../../store/useOrderStore';
 import { orderService } from '../../service/httpServices';
 import { toast } from 'react-toastify';
 import { usePaginationPage } from '../../store';
-import PaginationPage from '../PaginationPage';
 
 const { Meta } = Card;
 const path = 'https://m.media-amazon.com/images/I/71wXZB-VtBL._AC_UF1000,1000_QL80_.jpg';
 interface BookListProps {
-    title: string;
-    books: Array<any> | object;
-    category: object;
+    title: string | any;
+    books: Array<any> | object | any;
+    category: object | any;
 }
 
-const BookList: React.FC<BookListProps> = ({ title, books, category }) => {
-    const { orderItem, setOrderItem } = useOrderState();
+const BookList: React.FC<BookListProps> = ({ title, books, category=null }) => {
+    const { setOrderItem } = useOrderState();
     const navigate = useNavigate();
     const { paginationPage, setCurrentPage } = usePaginationPage((state) => state);
     const handleItemSelect = (id: number) => {

@@ -1,12 +1,11 @@
-import { currencyService } from '.';
 import dayjs from 'dayjs';
 
 export default {
-    currencyFormat: (num: number) => {
+    currencyFormat: (num: number | any) => {
         return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
     },
 
-    convertISOToObject: (isoString: string) => {
+    convertISOToObject: (isoString: string | any) => {
         const dayjsObject = dayjs(isoString);
 
         return {

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 interface BookState {
-    newBooks: Array<any> | object;
+    newBooks: Array<any> | object | any;
     setNewBooks: (data: object) => void;
 }
 

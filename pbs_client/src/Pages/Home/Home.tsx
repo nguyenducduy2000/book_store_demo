@@ -2,14 +2,13 @@
 import { useEffect, useState } from 'react';
 import { bookService } from '../../service/httpServices';
 // import Carousel from '../../Components/Carousel';
-import Swiper from '../../Components/Swiper';
 
 import './style.css';
 import { useNewBook, useBookState } from '../../store';
 import { Container, Spinner } from 'react-bootstrap';
 import { BookList } from '../../Components/BookList';
 function Home() {
-    const { loading, setLoading }: { loading: boolean; setLoading: (loading: boolean) => void } = useState(true);
+    const { loading, setLoading }= useState(true);
     const { books, setBooks } = useBookState((state) => state);
     const { newBooks, setNewBooks } = useNewBook((state) => state);
     // get data from backend

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { genreService } from '../../service/httpServices';
 import { useGenreView } from '../../store';

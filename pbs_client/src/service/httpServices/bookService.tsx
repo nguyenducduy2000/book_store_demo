@@ -25,7 +25,7 @@ export default {
         });
     },
 
-    getBook: (id: string | undefined) => {
+    getBook: (id: string | any | undefined) => {
         const options = {
             method: 'GET',
             url: `/books/${id}`,
@@ -37,7 +37,7 @@ export default {
         });
     },
 
-    create: (data: Object<any>) => {
+    create: (data: Object<any> | object | any) => {
         const options = {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token'),
@@ -53,7 +53,7 @@ export default {
         });
     },
 
-    update: (bookId: string | undefined, data: Object<any>) => {
+    update: (bookId: string | any | undefined, data: Object<any> | any) => {
         const options = {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token'),

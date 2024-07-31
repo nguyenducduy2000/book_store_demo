@@ -1,4 +1,3 @@
-import React from 'react';
 import { Row, Col, Layout, Breadcrumb } from 'antd';
 import { CheckoutForm, OrderSummary } from '../../Components/Checkout';
 import { Link } from 'react-router-dom';

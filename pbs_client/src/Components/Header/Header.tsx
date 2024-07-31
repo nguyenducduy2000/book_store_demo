@@ -15,14 +15,12 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
-import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Popover } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import ModalForm from '../ModalForm';
 import { userService, orderService } from '../../service/httpServices';
-import { Search, SearchIconWrapper, StyledInputBase } from '../Search';
+// import { Search, SearchIconWrapper, StyledInputBase } from '../Search';
 import GenreContent from '../GenreContent';
 import useOrderState from '../../store/useOrderStore';
 import { useModalState } from '../../store';

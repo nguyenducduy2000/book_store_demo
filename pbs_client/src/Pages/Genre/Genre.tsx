@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Spinner } from 'react-bootstrap';
 
 import { genreService } from '../../service/httpServices';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useBookState, usePaginationPage } from '../../store';
 import { BookList } from '../../Components/BookList';
 const Genre: React.FC = () => {

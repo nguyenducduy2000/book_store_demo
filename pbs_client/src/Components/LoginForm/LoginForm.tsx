@@ -4,8 +4,7 @@ import './LoginForm.css';
 import Logo from '../../assets/logo.png';
 import { useLocation, useNavigate } from 'react-router-dom';
 import authService from '../../service/httpServices/authService';
-import ModalMessage from '../Modal/Modal';
-import useModalState from '../../store/useModalState';
+// import useModalState from '../../store/useModalState';
 import { toast } from 'react-toastify';
 const Login = () => {
     const [inputEmail, setInputEmail] = useState('');
@@ -17,7 +16,7 @@ const Login = () => {
     const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
-    const modalShow = useModalState((state) => state.show);
+    // const modalShow = useModalState((state) => state.show);
 
     useEffect(() => {
         if (location.pathname === '/register') {

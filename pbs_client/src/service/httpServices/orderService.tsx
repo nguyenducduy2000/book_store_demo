@@ -31,7 +31,7 @@ export default {
         });
     },
 
-    addCartItem: (bookId: number) => {
+    addCartItem: (bookId: number | any) => {
         const options = {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token'),
@@ -49,7 +49,7 @@ export default {
         });
     },
 
-    updateCartItem: (bookId: number, quantity: number) => {
+    updateCartItem: (bookId: number | any, quantity: number | any) => {
         const options = {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token'),
@@ -68,7 +68,7 @@ export default {
         });
     },
 
-    deleteCartItem: (bookId: number) => {
+    deleteCartItem: (bookId: number | any) => {
         const options = {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token'),
@@ -86,7 +86,7 @@ export default {
         });
     },
 
-    checkout: (data: object) => {
+    checkout: (data: object | any) => {
         const options = {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token'),

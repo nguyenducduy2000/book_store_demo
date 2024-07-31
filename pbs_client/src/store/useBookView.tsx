@@ -3,16 +3,16 @@ import { create } from 'zustand';
 
 interface BookView {
     book: {
-        id: number;
-        title: string;
-        description: string;
-        avatar: string;
-        authorId: number;
-        genreId: number;
-        price: number;
-        stock: number;
-        pubId: number;
-        createdAt: string | any;
+        id: number | any;
+        title: string | any;
+        description: string | any;
+        avatar: string | any;
+        authorId: number | any;
+        genreId: number | any;
+        price: number | any;
+        stock: number | any;
+        pubId: number | any;
+        createdAt: string | any | any;
         author: object | any;
         genres: Array[any] | any;
     };

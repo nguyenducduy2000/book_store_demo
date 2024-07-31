@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 interface ModalState {
-    show: boolean;
+    show: boolean | any;
     status: 'create' | 'update';
     toggleShow: () => void;
     setClose: () => void;

@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 interface UserStore {
     user: {
-        id: number;
+        id: number | any;
         username: string | any;
         email: string | any;
         dateOfBirth: string | any;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Form, Input, Upload, Button, Select } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import type { UploadFile, UploadProps, SelectProps } from 'antd';
@@ -26,7 +26,7 @@ const CreateBookModal = () => {
         };
 
         fetchData();
-    }, []);
+    }, [setGenres]);
 
     useEffect(() => {
         if (status === 'update' && book) {

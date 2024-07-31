@@ -1,7 +1,7 @@
 import httpRequest from '../../utils/httpRequest';
 
 export default {
-    login: (email: string, password: string) => {
+    login: (email: string | any, password: string | any) => {
         const options = {
             method: 'POST',
             url: '/login',
@@ -17,7 +17,7 @@ export default {
         });
     },
 
-    register: (username: string, email: string, password: string) => {
+    register: (username: string | any, email: string | any, password: string | any) => {
         const options = {
             method: 'POST',
             url: '/register',

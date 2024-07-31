@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Layout, Menu, Form, Input, Button, DatePicker, Select, Avatar, Tabs, Spin } from 'antd';
+import  { useEffect, useState } from 'react';
+import { Layout, Menu, Form, Input, Button, DatePicker, Avatar, Tabs, Spin } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { userService } from '../../service/httpServices';
 import './styles.css';
 import useUserStore from '../../store/useUserStore';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
-import formatService from '../../service/formatService';
 const { Content, Sider } = Layout;
-const { Option } = Select;
 const { TabPane } = Tabs;
 
 const User = () => {

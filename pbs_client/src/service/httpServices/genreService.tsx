@@ -13,7 +13,7 @@ export default {
         });
     },
 
-    displayBookGenre: (genreId: string, page: number) => {
+    displayBookGenre: (genreId: string | any, page: number | any) => {
         const options = {
             method: 'GET',
             url: `/genres/${genreId}`,

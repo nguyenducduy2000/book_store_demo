@@ -38,7 +38,7 @@ const Cart = () => {
         }
     };
 
-    const handleQuantityChange = async (value: number, record: Object<any>) => {
+    const handleQuantityChange = async (value: number, record: object | Array<any> | any) => {
         // console.log(value, record.id);
         try {
             // toast.info('Updating cart item...');

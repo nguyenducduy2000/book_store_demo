@@ -2,7 +2,7 @@
 import { Breadcrumb, Row, Col, Card, Button, Rate, InputNumber, Dropdown, Menu } from 'antd';
 import { BookOutlined, ShoppingCartOutlined, EditOutlined, DeleteOutlined, DownOutlined } from '@ant-design/icons';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { bookService, orderService } from '../../service/httpServices';
 import useBookView from '../../store/useBookView';
 import useOrderState from '../../store/useOrderStore';
@@ -14,13 +14,11 @@ const BookCard = () => {
     const param = useParams();
     // console.log('param::: ', typeof param.id);
 
-    const { show, status, toggleShow, setStatus } = useModalState();
+    const { toggleShow, setStatus } = useModalState();
     const { book, setBooks } = useBookView((state) => state);
-    const [showToast, setShowToast] = useState(false);
     const { orderItem, setOrderItem } = useOrderState();
     const navigate = useNavigate();
-    const handleShowToast = () => setShowToast(true);
-    const handleCloseToast = () => setShowToast(false);
+
 
     useEffect(() => {
         const fetchData = async () => {

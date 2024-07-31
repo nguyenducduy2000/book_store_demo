@@ -31,5 +31,7 @@ WORKDIR /app/build
 
 RUN npm install 
 
+EXPOSE 3333
+
 # Command to run the application
 CMD ["node", "/bin/server.js"]

@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
 interface Genre {
-    id: number;
-    name: string;
+    id: number | any;
+    name: string | any;
 }
 
 interface GenreView {
