@@ -8,17 +8,20 @@ import { useNewBook, useBookState } from '../../store';
 import { Container, Spinner } from 'react-bootstrap';
 import { BookList } from '../../Components/BookList';
 function Home() {
-    const { loading, setLoading }= useState(true);
+    const { loading, setLoading } = useState(true);
     const { books, setBooks } = useBookState((state) => state);
     const { newBooks, setNewBooks } = useNewBook((state) => state);
     // get data from backend
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [bookGenres, latestBooks] = await Promise.all([bookService.home(), bookService.getLatestBooks()]);
+                const [bookGenres, latestBooks] = await Promise.all([
+                    bookService.home(),
+                    bookService.getLatestBooks(1),
+                ]);
                 // const response = await bookService.home();
                 setBooks(bookGenres);
-                setNewBooks(latestBooks);
+                setNewBooks(latestBooks.data);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', {
@@ -78,7 +81,7 @@ function Home() {
             ) : (
                 <h1>No data is found</h1>
             )}
-            <BookList title="Sách mới nhất" books={newBooks} />
+            {newBooks && <BookList title="Tất cả các sách" books={newBooks} category={'latest'} />}
         </div>
     );
 }

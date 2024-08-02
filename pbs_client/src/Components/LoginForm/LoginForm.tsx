@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import './LoginForm.css';
-import Logo from '../../assets/logo.png';
 import { useLocation, useNavigate } from 'react-router-dom';
 import authService from '../../service/httpServices/authService';
 // import useModalState from '../../store/useModalState';
@@ -75,7 +74,6 @@ const Login = () => {
     return (
         <>
             <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
-                <img className="img-thumbnail mx-auto d-block mb-2" src={Logo} alt="logo" />
                 <div className="h4 mb-2 text-center">{location.pathname === '/register' ? 'Register' : 'Sign In'}</div>
                 {show && (
                     <Alert className="mb-2" variant="danger" onClose={() => setShow(false)} dismissible>
@@ -130,15 +128,23 @@ const Login = () => {
                 )}
                 {location.pathname === '/login' ? (
                     <div className="d-flex justify-content-between mt-2">
-                        <Button className="text-muted px-0" variant="link" onClick={handlePassword}>
-                            Forgot password?
-                        </Button>
+                        <div className="d-flex flex-column">
+                            <Button className="text-muted px-0" variant="link" onClick={handlePassword}>
+                                Forgot password?
+                            </Button>
+                            <Button className="text-muted px-0" variant="link" onClick={() => navigate('/')}>
+                                Back to home page
+                            </Button>
+                        </div>
                         <Button className="text-muted px-0" variant="link" onClick={() => navigate('/register')}>
                             Create an account
                         </Button>
                     </div>
                 ) : (
-                    <div className="d-flex justify-content-end mt-2">
+                    <div className="d-flex justify-content-between mt-2">
+                        <Button className="text-muted px-0" variant="link" onClick={() => navigate('/')}>
+                            Back to home page
+                        </Button>
                         <Button className="text-muted px-0" variant="link" onClick={() => navigate('/login')}>
                             Already have an ccount
                         </Button>

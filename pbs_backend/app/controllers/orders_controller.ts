@@ -5,12 +5,16 @@ import { DateTime } from 'luxon'
 export default class OrdersController {
     // [GET] /orders
     async index({ auth }: HttpContext) {
-        // authenticate the user
+        // Authenticate the user
         const user = await auth.authenticate()
+
+        // Query the orders
         const orders = await Order.query()
             .where('user_id', user.id)
-            .where('status', 'instant')
+            .whereNot('status', 'pending')
+            .orderBy('created_at', 'desc')
             .preload('books')
+
         return orders
     }
 
@@ -34,6 +38,33 @@ export default class OrdersController {
             })
             await order.save()
             response.status(200).json(order)
+        } catch (error) {
+            response.status(500).json({ message: 'Error occurred while fetching books' })
+        }
+    }
+
+    async updateCheckout({ request, auth, response }: HttpContext) {
+        try {
+            // authenticate the user
+            const user = await auth.authenticate()
+
+            // find order by it's id
+            const data = await request.body()
+
+            const order = await Order.query().where('id', data.id).firstOrFail()
+
+            // update the order status to paid
+            order.merge({
+                status: request.input('status', request.input('status', order.status)),
+            })
+            await order.save()
+            const updatedOrders = await Order.query()
+                .where('user_id', user.id)
+                .whereNot('status', 'pending')
+                .orderBy('created_at', 'desc')
+                .preload('books')
+
+            response.status(200).json(updatedOrders)
         } catch (error) {
             response.status(500).json({ message: 'Error occurred while fetching books' })
         }

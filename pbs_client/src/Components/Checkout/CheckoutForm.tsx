@@ -40,13 +40,13 @@ const CheckoutForm = ({ form }) => {
                 <Input disabled />
             </Form.Item>
             <Form.Item label="Số điện thoại (tùy chọn)" name="phoneNumber">
-                <Input placeholder="VD: 0123..." />
+                <Input placeholder="Your phone number" />
             </Form.Item>
             <Form.Item label="Địa chỉ" name="address">
-                <Input placeholder="Nhập địa chỉ vào đây" />
+                <Input placeholder="Your delivery address" />
             </Form.Item>
             <Form.Item label="Ghi chú (tùy chọn)" name="note">
-                <Input.TextArea placeholder="Ghi chú cho nhân viên giao hàng" />
+                <Input.TextArea placeholder="Notes for delivery" />
             </Form.Item>
 
             <h3>Thanh toán</h3>

@@ -41,14 +41,18 @@ export default class BooksController {
         }
     }
 
-    async getLastestBooks({}: HttpContext) {
-        const books = await Book.query()
-            .preload('author')
-            .preload('genres')
-            .orderBy('created_at', 'desc')
-            .limit(15)
+    async getLastestBooks({ pagination, response }: HttpContext) {
+        try {
+            const books = await Book.query()
+                .preload('author')
+                .preload('genres')
+                .orderBy('created_at', 'desc')
+                .paginate(pagination.page, pagination.perPage)
 
-        return books
+            return response.ok(books)
+        } catch (error) {
+            response.status(500).json({ message: 'Error occurred while fetching books' })
+        }
     }
 
     async factory({}: HttpContext) {

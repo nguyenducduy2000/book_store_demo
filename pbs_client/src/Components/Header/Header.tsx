@@ -41,6 +41,7 @@ const Header: React.FC = () => {
                     const [userData, orderData] = await Promise.all([userService.index(), orderService.getOrderItem()]);
                     // console.log({ userData, orderData });
                     setUser(userData);
+                    console.log(orderData);
                     setOrderItem(orderData);
                     setIsLogin(true);
                 }

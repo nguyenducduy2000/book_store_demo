@@ -101,4 +101,36 @@ export default {
             return data;
         });
     },
+
+    getOrderList: () => {
+        const options = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token'),
+            },
+            method: 'GET',
+            url: `/order`,
+        };
+        return httpRequest(options).then((res) => {
+            const data = res.data;
+            return data;
+        });
+    },
+
+    updateOrderStatus: (orderId: number | any, status: string | any) => {
+        const options = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token'),
+            },
+            method: 'PUT',
+            url: `/order/complete`,
+            data: {
+                id: orderId,
+                status: status,
+            },
+        };
+        return httpRequest(options).then((res) => {
+            const data = res.data;
+            return data;
+        });
+    },
 };

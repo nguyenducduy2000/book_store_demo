@@ -29,7 +29,7 @@ export default class Order extends BaseModel {
     declare paymentMethod: 'cash' | 'card' | 'visa' | 'paypal'
 
     @column()
-    declare status: 'pending' | 'processing' | 'paid' | 'cancelled'
+    declare status: 'pending' | 'instant' | 'processing' | 'paid' | 'cancelled'
 
     @column({ columnName: 'client_phone_number' })
     declare clientPhoneNumber: string | null

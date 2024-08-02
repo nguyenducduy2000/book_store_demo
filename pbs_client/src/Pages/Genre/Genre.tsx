@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Spinner } from 'react-bootstrap';
 
-import { genreService } from '../../service/httpServices';
+import { bookService, genreService } from '../../service/httpServices';
 import { useParams } from 'react-router-dom';
 import { useBookState, usePaginationPage } from '../../store';
 import { BookList } from '../../Components/BookList';
@@ -13,9 +13,21 @@ const Genre: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await genreService.displayBookGenre(param.genreId || '', paginationPage.currentPage);
-                setBooks(response.data);
-                setPaginationPage(response.meta);
+                let response;
+
+                if (location.pathname.includes('/latest')) {
+                    console.log(paginationPage.currentPage);
+
+                    response = await bookService.getLatestBooks(paginationPage.currentPage);
+                } else if (location.pathname.includes('/genre')) {
+                    response = await genreService.displayBookGenre(param.genreId || '', paginationPage.currentPage);
+                }
+
+                if (response) {
+                    setBooks(response.data);
+                    setPaginationPage(response.meta);
+                }
+
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -23,8 +35,7 @@ const Genre: React.FC = () => {
         };
 
         fetchData();
-    }, [param.genreId, setBooks, setLoading, setPaginationPage, paginationPage.currentPage]);
-
+    }, [location.pathname, param.genreId, paginationPage.currentPage]);
     if (loading) {
         return (
             <Container>

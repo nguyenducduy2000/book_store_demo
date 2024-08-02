@@ -28,7 +28,7 @@ router.get('/test', [AuthController, 'index'])
 router
     .group(() => {
         router.get('/', [BooksController, 'index'])
-        router.get('/latest', [BooksController, 'getLastestBooks'])
+        router.get('/latest', [BooksController, 'getLastestBooks']).use(middleware.pagination())
         router.get('/:id', [BooksController, 'show'])
         router
             .group(() => {
@@ -79,6 +79,7 @@ router
 router
     .group(() => {
         router.put('/checkout', [OrdersController, 'checkout'])
+        router.put('/complete', [OrdersController, 'updateCheckout'])
         router.post('/create', [OrdersController, 'createInstantOrder'])
         router.delete('/cancel/:id', [OrdersController, 'cancelInstanceOrder'])
         router.get('/', [OrdersController, 'index'])

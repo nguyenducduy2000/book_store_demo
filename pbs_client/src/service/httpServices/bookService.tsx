@@ -13,10 +13,11 @@ export default {
         });
     },
 
-    getLatestBooks: () => {
+    getLatestBooks: (page: number | any) => {
         const options = {
             method: 'GET',
             url: '/books/latest',
+            params: { page },
         };
         return httpRequest(options).then((res) => {
             const data = res.data;
@@ -85,7 +86,6 @@ export default {
         };
         return httpRequest(options).then((res) => {
             const data = res.data;
-            // console.log(data);
             return data;
         });
     },

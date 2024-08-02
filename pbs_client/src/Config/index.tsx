@@ -1,7 +1,1 @@
-import routes from './routes';
-
-const config = {
-    routes,
-};
-
-export default config;
+export { default as AppRoutes } from './routeConfig';

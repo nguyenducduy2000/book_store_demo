@@ -17,7 +17,7 @@ interface BookListProps {
     category: object | any;
 }
 
-const BookList: React.FC<BookListProps> = ({ title, books, category=null }) => {
+const BookList: React.FC<BookListProps> = ({ title, books, category = null }) => {
     const { setOrderItem } = useOrderState();
     const navigate = useNavigate();
     const { paginationPage, setCurrentPage } = usePaginationPage((state) => state);
@@ -55,7 +55,12 @@ const BookList: React.FC<BookListProps> = ({ title, books, category=null }) => {
         <Container>
             <div className="d-flex flex-row justify-content-between">
                 <h1 className="mt-4 mb-4">{title}</h1>
-                {location.pathname === '/' && category && <Link to={`/genres/${category.id}`}>See more</Link>}
+                {location.pathname === '/' &&
+                    (category === 'latest' ? (
+                        <Link to="/latest">See more</Link>
+                    ) : (
+                        category && <Link to={`/genres/${category.id}`}>See more</Link>
+                    ))}{' '}
             </div>
             {books.length > 0 ? (
                 <>
